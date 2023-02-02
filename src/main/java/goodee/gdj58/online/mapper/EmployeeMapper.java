@@ -10,7 +10,7 @@ import goodee.gdj58.online.vo.Employee;
 @Mapper
 public interface EmployeeMapper {
 	
-	
+	int selectEmpListCnt(String searchWord);
 	
 	int updateEmployeePw(Map<String, Object> paramMap);
 	

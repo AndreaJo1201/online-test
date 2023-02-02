@@ -29,11 +29,18 @@ public class TeacherService {
 		return teacherMapper.insertTeacher(teacher);
 	}
 	
-	public List<Teacher> getTeacherList(int currentPage, int rowPerPage) {
+	public int getTeacherListCnt(String searchWord) {
+		return teacherMapper.selectTeacherListCnt(searchWord);
+	}
+	
+	public List<Teacher> getTeacherList(int currentPage, int rowPerPage, String searchWord, String searchCategory) {
 		int beginRow = (currentPage-1)*rowPerPage;
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("serachCategory", searchCategory);
 		return teacherMapper.selectTeacherList(paramMap);
 	}
 }

@@ -44,6 +44,34 @@
 			)
 	</insert>
 	
+	<select id="selectEmpListCnt"
+			resultType="int"
+			parameterType="String">
+				
+			SELECT
+				COUNT(*)
+			FROM employee
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord !=''">
+							emp_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'all'">
+						<if test="searchWord != null and searchWord !=''">
+							emp_Id LIKE CONCAT('%',#{searchWord},'%') OR emp_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord !=''">
+							emp_Id LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+	</select>
+	
 	<select id="selectEmployeeList"
 			resultType="goodee.gdj58.online.vo.Employee"
 			parameterType="java.util.Map">
@@ -53,6 +81,25 @@
 				, emp_id empId
 				, emp_name empName
 			FROM employee
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord !=''">
+							emp_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'all'">
+						<if test="searchWord != null and searchWord !=''">
+							emp_Id LIKE CONCAT('%',#{searchWord},'%') OR emp_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord !=''">
+							emp_Id LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
 			ORDER BY emp_no DESC
 			LIMIT #{beginRow}, #{rowPerPage}
 	</select>

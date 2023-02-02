@@ -18,8 +18,10 @@ import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Teacher;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
@@ -97,12 +99,38 @@ public class EmployeeController {
 	@GetMapping("/employee/student/studentList")
 	public String studentList(Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) {
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord
+							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
 		
-		List<Student> list = studentService.getStudentList(currentPage, rowPerPage);
+		List<Student> list = studentService.getStudentList(currentPage, rowPerPage, searchWord, searchCategory);
+		int listCnt = studentService.getStudentListCnt(searchWord); // list 갯수
+		
+		final int PAGE_COUNT = 10;
+		
+		int beginPage = (currentPage-1)/PAGE_COUNT*PAGE_COUNT+1;
+		int endPage = beginPage+PAGE_COUNT-1;
+		int lastPage = (int)Math.ceil((double)listCnt / (double)rowPerPage);
+		
+		if(currentPage < 1) {
+			currentPage = 1;
+		} else if(currentPage > lastPage) {
+			if(lastPage < 1) {
+				lastPage = 1;
+			}
+			currentPage = lastPage;
+		}
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
+		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("beginPage", beginPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("searchCategory", searchCategory);
+		
 		return "employee/student/studentList";
 	}
 	
@@ -149,12 +177,38 @@ public class EmployeeController {
 	@GetMapping("employee/teacher/teacherList")
 	public String teacherList(Model model
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) {
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord
+							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
 		
-		List<Teacher> list = teacherService.getTeacherList(currentPage, rowPerPage);
+		List<Teacher> list = teacherService.getTeacherList(currentPage, rowPerPage, searchWord, searchCategory);
+		int listCnt = teacherService.getTeacherListCnt(searchWord); // list 갯수
+		
+		final int PAGE_COUNT = 10;
+		
+		int beginPage = (currentPage-1)/PAGE_COUNT*PAGE_COUNT+1;
+		int endPage = beginPage+PAGE_COUNT-1;
+		int lastPage = (int)Math.ceil((double)listCnt / (double)rowPerPage);
+		
+		if(currentPage < 1) {
+			currentPage = 1;
+		} else if(currentPage > lastPage) {
+			if(lastPage < 1) {
+				lastPage = 1;
+			}
+			currentPage = lastPage;
+		}
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
+		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("beginPage", beginPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("searchCategory", searchCategory);
+		
 		return "employee/teacher/teacherList";
 	}
 	
@@ -235,13 +289,43 @@ public class EmployeeController {
 	@GetMapping("/employee/empList")
 	public String empList(Model model
 						, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
-						, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) { 
+						, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+						, @RequestParam(value="searchWord", defaultValue="") String searchWord
+						, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) { 
 						// int currentPage = reuqest.getParamenter("currentPage");
+		log.debug("\u001B[31m"+searchWord+" <-- searchWord"+"\u001B[0m");
+		log.debug("\u001B[31m"+rowPerPage+" <-- rowPerPage"+"\u001B[0m");
+		log.debug("\u001B[31m"+currentPage+" <-- currentPage"+"\u001B[0m");
 		
-		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage);
+		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord, searchCategory);
+		
+		int listCnt = employeeService.getEmployeeListCnt(searchWord); // list 갯수
+		
+		final int PAGE_COUNT = 10;
+		
+		int beginPage = (currentPage-1)/PAGE_COUNT*PAGE_COUNT+1;
+		int endPage = beginPage+PAGE_COUNT-1;
+		int lastPage = (int)Math.ceil((double)listCnt / (double)rowPerPage);
+		
+		if(currentPage < 1) {
+			currentPage = 1;
+		} else if(currentPage > lastPage) {
+			if(lastPage < 1) {
+				lastPage = 1;
+			}
+			currentPage = lastPage;
+		}
+		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
+		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("beginPage", beginPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("searchCategory", searchCategory);
+		
 		return "employee/empList";
 	}
 }

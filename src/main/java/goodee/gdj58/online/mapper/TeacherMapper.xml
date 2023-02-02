@@ -36,6 +36,34 @@
 			)
 	</insert>
 	
+	<select id="selectTeacherListCnt"
+			resultType="int"
+			parameterType="String">
+				
+			SELECT
+				COUNT(*)
+			FROM teacher
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord !=''">
+							teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'all'">
+						<if test="searchWord != null and searchWord !=''">
+							teacher_Id LIKE CONCAT('%',#{searchWord},'%') OR teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord !=''">
+							teacher_Id LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+	</select>
+	
 	<select id="selectTeacherList"
 			resultType="goodee.gdj58.online.vo.Teacher"
 			parameterType="java.util.Map">
@@ -45,6 +73,25 @@
 				, teacher_id teacherId
 				, teacher_name teacherName
 			FROM teacher
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord !=''">
+							teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'all'">
+						<if test="searchWord != null and searchWord !=''">
+							teacher_Id LIKE CONCAT('%',#{searchWord},'%') OR teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord !=''">
+							teacher_Id LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
 			ORDER BY teacher_no DESC
 			LIMIT #{beginRow}, #{rowPerPage}
 	</select>

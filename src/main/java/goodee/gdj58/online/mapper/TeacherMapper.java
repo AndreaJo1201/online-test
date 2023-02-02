@@ -10,6 +10,7 @@ import goodee.gdj58.online.vo.Teacher;
 @Mapper
 public interface TeacherMapper {
 	
+	int selectTeacherListCnt(String searchWord);
 	
 	Teacher login(Teacher teacher);
 	
