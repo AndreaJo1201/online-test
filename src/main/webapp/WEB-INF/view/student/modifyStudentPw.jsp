@@ -5,17 +5,17 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>비밀번호 수정.Employee</title>
+		<title>비밀번호 수정.Student</title>
 	</head>
 	
 	<body>
-		<!-- empMenu include -->
+		<!-- studentMenu include -->
 		<div>
-			<c:import url="/WEB-INF/view/employee/inc/empMenu.jsp"></c:import>
+			<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"></c:import>
 		</div>
 		
-		<h1>${loginEmp.empName}님 비밀번호 수정</h1>
-		<form method="post" action="${pageContext.request.contextPath}/employee/modifyEmpPw">
+		<h1>${loginStudent.studentName}님 비밀번호 수정</h1>
+		<form method="post" action="${pageContext.request.contextPath}/student/modifyStudentPw">
 			<table border="1">
 				<tr>
 					<td>현재 비밀번호</td>

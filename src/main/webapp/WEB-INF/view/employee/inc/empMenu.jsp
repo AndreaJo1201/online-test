@@ -12,6 +12,7 @@
 	<!-- 학생 목록, 학생 삭제 -->
 	<!-- 등록시 ID 체크(employee + teacher + student) -->
 	
-	<a href="${pageContext.request.contextPath}/employee/logout">로그아웃</a>
 	<a href="${pageContext.request.contextPath}/employee/modifyEmpPw">비밀번호변경</a>
+	
+	<a href="${pageContext.request.contextPath}/employee/logout">로그아웃</a>
 </div>

@@ -34,8 +34,7 @@ public class EmployeeController {
 	
 	// 로그인 화면 출력
 	@GetMapping("/loginEmp")
-	public String loginEmp(HttpSession session) {
-
+	public String loginEmp() {
 		return "employee/loginEmp";
 	}
 	

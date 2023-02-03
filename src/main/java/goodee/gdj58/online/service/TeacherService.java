@@ -17,6 +17,14 @@ public class TeacherService {
 	@Autowired
 	private TeacherMapper teacherMapper;
 	
+	public int modifyTeacherPw(int empNo, String oldPw, String newPw) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("empNo", empNo);
+		paramMap.put("oldPw", oldPw);
+		paramMap.put("newPw", newPw);
+		return teacherMapper.updateTeacherPw(paramMap);
+	}
+	
 	public Teacher login(Teacher teacher) {
 		return teacherMapper.login(teacher);
 	}
