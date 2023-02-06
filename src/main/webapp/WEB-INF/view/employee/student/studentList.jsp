@@ -45,24 +45,24 @@
 			</c:forEach>
 		</table>
 		<div>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=1&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">처음으로</a>
-			<c:if test="${currentPage > 1}">
-				<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">이전</a>
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=1&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">처음으로</a>
+			<c:if test="${paging['currentPage'] > 1}">
+				<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${paging['currentPage']-1}&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">이전</a>
 			</c:if>
-			<c:if test="${lastPage >= endPage}">
-				<c:forEach var="a" begin="${beginPage}" end="${endPage}">
-					<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${a}&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">${a}</a>
+			<c:if test="${paging['lastPage'] >= paging['endPage']}">
+				<c:forEach var="a" begin="${paging['beginPage']}" end="${paging['endPage']}">
+					<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${a}&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">${a}</a>
 				</c:forEach>
 			</c:if>
-			<c:if test="${lastPage < endPage}">
-				<c:forEach var="a" begin="${beginPage}" end="${lastPage}">
-					<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${a}&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">${a}</a>
+			<c:if test="${paging['lastPage'] < paging['endPage']}">
+				<c:forEach var="a" begin="${paging['beginPage']}" end="${paging['lastPage']}">
+					<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${a}&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">${a}</a>
 				</c:forEach>
 			</c:if>
-			<c:if test="${currentPage < lastPage}">
-				<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">다음</a>
+			<c:if test="${paging['currentPage'] < paging['lastPage']}">
+				<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${paging['currentPage']+1}&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">다음</a>
 			</c:if>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${lastPage}&searchWord=${searchWord}&rowPerPage=${rowPerPage}&searchCategory=${searchCategory}">끝으로</a>
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${paging['lastPage']}&searchWord=${searchWord}&rowPerPage=${paging['rowPerPage']}&searchCategory=${searchCategory}">끝으로</a>
 		</div>			
 	</body>
 </html>
