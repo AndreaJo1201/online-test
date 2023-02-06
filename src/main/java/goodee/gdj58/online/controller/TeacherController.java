@@ -56,6 +56,33 @@ public class TeacherController {
 		return "teacher/testList";
 	}
 	
+	//강사 비밀번호 수정(post)
+	@PostMapping("/teacher/modifyTeacherPw")
+	public String modifyEmpPw(HttpSession session
+							, @RequestParam(value="oldPw", required = true) String oldPw
+							, @RequestParam(value="newPw", required = true) String newPw) {
+		
+		// login 상태가 아니라면 redirect:/employee/loginEmp
+		Teacher loginTeacher = (Teacher)session.getAttribute("loginTeacher");
+
+		int teacherNo = loginTeacher.getTeacherNo();
+		
+		int row = teacherService.modifyTeacherPw(teacherNo, oldPw, newPw);
+		if(row == 0) {
+			System.out.println("UPDATE Password False... :(");
+			return"redirect:/teacher/modifyTeacherPw";
+		}
+		
+		System.out.println("UPDATE Password Success..! :D");
+		return "redirect:/teacher/logout";
+	}
+	
+	// 비밀번호 수정
+	@GetMapping("/teacher/modifyTeacherPw")
+	public String modifyTeacherPw() {
+		return "/teacher/modifyTeacherPw";
+	}
+	
 	// 로그아웃
 	@GetMapping("/teacher/logout")
 	public String logout(HttpSession session) {
