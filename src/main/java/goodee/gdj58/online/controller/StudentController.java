@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.vo.Student;
-import lombok.extern.slf4j.Slf4j;
+// import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
+// @Slf4j
 public class StudentController {
 	@Autowired
 	private StudentService studentService;

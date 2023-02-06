@@ -1,6 +1,7 @@
 package goodee.gdj58.online.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -300,29 +301,12 @@ public class EmployeeController {
 		
 		int listCnt = employeeService.getEmployeeListCnt(searchWord); // list 갯수
 		
-		final int PAGE_COUNT = 10;
-		
-		int beginPage = (currentPage-1)/PAGE_COUNT*PAGE_COUNT+1;
-		int endPage = beginPage+PAGE_COUNT-1;
-		int lastPage = (int)Math.ceil((double)listCnt / (double)rowPerPage);
-		
-		if(currentPage < 1) {
-			currentPage = 1;
-		} else if(currentPage > lastPage) {
-			if(lastPage < 1) {
-				lastPage = 1;
-			}
-			currentPage = lastPage;
-		}
+		Map<String, Integer> paging = employeeService.paging(listCnt, currentPage, rowPerPage);
 		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
 		model.addAttribute("searchWord",searchWord);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("beginPage", beginPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("paging",paging);
 		model.addAttribute("searchCategory", searchCategory);
 		
 		return "employee/empList";

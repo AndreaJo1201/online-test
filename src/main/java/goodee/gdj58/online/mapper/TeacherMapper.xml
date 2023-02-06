@@ -2,6 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
 	
+	<select id="selectTestListCnt"
+			resultType="int"
+			parameterType="java.util.Map">
+			
+			SELECT COUNT(*)
+			FROM test
+			<where>
+				<choose>
+					<when test="searchWord != null and SearchWord !=''">
+						teacher_no = ${teacherNo} AND test_title LIKE CONCAT('%',#{searchWord},'%')
+					</when>
+					<otherwise>
+						teacher_no = ${teacherNo}
+					</otherwise>
+				</choose>
+			</where>		
+	</select>
+
+	<select id="selectTestList"
+			resultType="java.util.Map"
+			parameterType="java.util.Map">
+			
+			SELECT
+				test_no testNo
+				, test_title testTitle
+				, test_date testDate
+			FROM test
+			<where>
+				<choose>
+					<when test="searchWord != null and searchWord !=''">
+						teacher_no = ${teacherNo} AND test_title LIKE CONCAT('%',#{searchWord},'%')
+					</when>
+					<otherwise>
+						teacher_no = ${teacherNo}
+					</otherwise>
+				</choose>
+			</where>
+			ORDER BY test_date DESC
+			LIMIT ${beginRow}, ${rowPerPage}
+	</select>
+	
 	<update id="updateTeacherPw"
 			parameterType="java.util.Map">
 			

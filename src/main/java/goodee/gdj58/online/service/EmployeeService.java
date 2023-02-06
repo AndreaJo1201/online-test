@@ -18,6 +18,33 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeMapper employeeMapper;
 	
+	public Map<String, Integer> paging(int listCnt, int currentPage, int rowPerPage) {
+		Map<String, Integer> paging = new HashMap<String, Integer>();
+		
+		final int PAGE_COUNT = 10;
+		
+		int beginPage = (currentPage-1)/PAGE_COUNT*PAGE_COUNT+1;
+		int endPage = beginPage+PAGE_COUNT-1;
+		int lastPage = (int)Math.ceil((double)listCnt / (double)rowPerPage);
+		
+		if(currentPage < 1) {
+			currentPage = 1;
+		} else if(currentPage > lastPage) {
+			if(lastPage < 1) {
+				lastPage = 1;
+			}
+			currentPage = lastPage;
+		}
+		
+		paging.put("currentPage", currentPage);
+		paging.put("beginPage", beginPage);
+		paging.put("endPage", endPage);
+		paging.put("lastPage", lastPage);
+		paging.put("rowPerPage", rowPerPage);
+		
+		return paging;
+	}
+	
 	public int modifyEmployeePw(int empNo, String oldPw, String newPw) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("empNo", empNo);

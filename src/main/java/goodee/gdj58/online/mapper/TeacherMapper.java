@@ -10,6 +10,10 @@ import goodee.gdj58.online.vo.Teacher;
 @Mapper
 public interface TeacherMapper {
 	
+	int selectTestListCnt(Map<String,Object> paramMap);
+	
+	List<Map<String, Object>> selectTestList(Map<String, Object> paramMap);
+	
 	int updateTeacherPw(Map<String, Object> paramMap);
 	
 	int selectTeacherListCnt(String searchWord);

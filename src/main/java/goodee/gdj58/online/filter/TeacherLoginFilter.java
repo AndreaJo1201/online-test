@@ -24,9 +24,10 @@ public class TeacherLoginFilter implements Filter{
 		log.debug("\u001B[31m"+"TeacherLoginFilter"+"\u001B[0m");
 		
 		if(request instanceof HttpServletRequest) {
-			HttpSession session = ((HttpServletRequest) request).getSession();
+			HttpServletRequest req = (HttpServletRequest)request;
+			HttpSession session = req.getSession();
 			if(session.getAttribute("loginTeacher") == null) {
-				((HttpServletResponse)response).sendRedirect("/loginTeacher");
+				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/loginTeacher");
 				return;
 			}
 		} else {
