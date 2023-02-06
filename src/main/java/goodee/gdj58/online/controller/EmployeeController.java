@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.EmployeeService;
 import goodee.gdj58.online.service.IdService;
+import goodee.gdj58.online.service.PageService;
 import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.vo.Employee;
@@ -32,6 +33,8 @@ public class EmployeeController {
 	private TeacherService teacherService;
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private PageService pageService;
 	
 	// 로그인 화면 출력
 	@GetMapping("/loginEmp")
@@ -106,7 +109,7 @@ public class EmployeeController {
 		List<Student> list = studentService.getStudentList(currentPage, rowPerPage, searchWord, searchCategory);
 		int listCnt = studentService.getStudentListCnt(searchWord); // list 갯수
 		
-		Map<String, Integer> paging = employeeService.paging(listCnt, currentPage, rowPerPage);
+		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
@@ -167,7 +170,7 @@ public class EmployeeController {
 		List<Teacher> list = teacherService.getTeacherList(currentPage, rowPerPage, searchWord, searchCategory);
 		int listCnt = teacherService.getTeacherListCnt(searchWord); // list 갯수
 		
-		Map<String, Integer> paging = employeeService.paging(listCnt, currentPage, rowPerPage);
+		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);
@@ -267,7 +270,7 @@ public class EmployeeController {
 		
 		int listCnt = employeeService.getEmployeeListCnt(searchWord); // list 갯수
 		
-		Map<String, Integer> paging = employeeService.paging(listCnt, currentPage, rowPerPage);
+		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
 		// request.setAttribute("list", list);
 		model.addAttribute("list", list);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import goodee.gdj58.online.service.PageService;
 import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.vo.Teacher;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 public class TeacherController {
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private PageService pageService;
+	
+	//시험 등록 페이지 forward
+	@GetMapping("/teacher/test/addTest")
+	public String getAddTest() {
+		return "teacher/test/addTest";
+	}
 	
 	// 시험리스트 출력
 	@GetMapping("/teacher/testList")
@@ -38,7 +47,7 @@ public class TeacherController {
 		
 		int listCnt = teacherService.getTestListCnt(searchWord, teacher.getTeacherNo());
 		
-		Map<String, Integer> paging = teacherService.paging(listCnt, currentPage, rowPerPage);
+		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("searchWord", searchWord);
