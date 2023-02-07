@@ -23,7 +23,10 @@
 						</tr>
 						<tr>
 							<td>담당 강사</td>
-							<td><input type="text" readonly="readonly" value="${loginTeacher.teacherName}"></td>
+							<td>
+								<input type="text" readonly="readonly" value="${loginTeacher.teacherName}" name="testTeacher">
+								<input type="hidden" readonly="readonly" value="${loginTeacher.teacherNo}" name="teacherNo">
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -37,11 +40,12 @@
 						<span>보기 입력</span>
 						<div class="example" id="example">
 							<input type="text" placeholder="보기 내용" name="exampleTitle">
-							<input type="radio" name="exampleOx" value="정답">정답
-							<input type="radio" name="exampleOx" value="오답" style="visibility: hidden;" checked="checked">
-							<button type="button" id="removeExam">보기 삭제</button>
+							<input type="checkbox" onchange="checkOx()"><label>정답</label>
+							<input type="hidden" name="exampleOx" id="exampleOx" value="오답">
+							<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>
 						</div>
-						<button type="button" id="addE">보기 추가</button>
+						<input type="hidden" name="exampleCnt" id="exampleCnt" value="1">
+						<button type="button" id="addE" onclick="addExam()">보기 추가</button>
 					</div>
 					<button type="button" id="addQ" onclick="addQuestion()">문제 추가</button>
 				</div>
@@ -52,8 +56,92 @@
 		<!-- script -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 		<script>
+				
+			function addQuestion() {
+				
+				let $question = $('<div></div>');
+				$question.attr('id','question');
+				$question.attr('class','question');
+				
+				let $example = $('<div></div>');
+				$example.attr('id', 'example');
+				$example.attr('class', 'example');
+				
+				let $exampleTitle = $('<input type="text" placeholder="보기 내용" name="exampleTitle">');
+				let $exampleOx1 = $('<input type="checkbox" onchange="checkOx()"><label>정답</label>');
+				let $exampleOx2 = $('<input type="hidden" name="exampleOx()" id="exampleOx" value="오답">');
+				let $removeExam = $('<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>');
+				
+				$example.append($exampleTitle);
+				$example.append($exampleOx1);
+				$example.append($exampleOx2);
+				$example.append($removeExam);
+				
+				let $span1 = $('<span>문제 입력</span>');
+				let $div = $('<div><input type="text" placeholder="문제 내용" name="questionTitle"></div>');
+				let $span2 = $('<span>보기 입력</span>');
+				let $addE = $('<button type="button" id="addE" onclick="addExam()">보기 추가</button>');
+				let $exampleCnt = $('<input type="hidden" name="exampleCnt" id="exampleCnt" value="1">');
+				
+				$question.append($span1);
+				$question.append($div);
+				$question.append($span2);
+				$question.append($example);
+				$question.append($addE);
+				$question.append($exampleCnt);
+				
+				$('#addQ').before($question);
+			}
 			
-			//처리를 어떻게 해야할까..
+			function addExam() {
+				
+				let $example = $('<div></div>');
+				$example.attr('class', 'example');
+				$example.attr('id', 'example');
+				
+				let $exampleTitle = $('<input type="text" placeholder="보기 내용" name="exampleTitle">');
+				let $exampleOx1 = $('<input type="checkbox" onchange="checkOx()"><label>정답</label>');
+				let $exampleOx2 = $('<input type="hidden" name="exampleOx" id="exampleOx" value="오답">');
+				let $removeExam = $('<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>');
+				
+				$example.append($exampleTitle);
+				$example.append($exampleOx1);
+				$example.append($exampleOx2);
+				$example.append($removeExam);
+				
+				$(event.target).before($example);
+				
+				let $target = $(event.target.parentNode);
+				
+				console.log($target.children('#exampleCnt'));
+				
+				let $examCnt = $target.children('#exampleCnt');
+				$examCnt.attr('value',$target.children('#example').length);
+				
+			}
+			
+			function checkOx() {
+				let $parent = $(event.target.parentNode);
+				let $check = $parent.children('#exampleOx');
+				
+				let $target = $(event.target);
+				
+				if($target.is(':checked') == true) {
+					$check.attr('value','정답');
+				} else {
+					$check.attr('value','오답');
+				}
+				
+				
+				console.log($check.val());	
+				
+			}
+			
+			function removeExam() {
+				event.target.parentNode.remove();
+				
+			}
+
 		
 		</script>
 	</body>

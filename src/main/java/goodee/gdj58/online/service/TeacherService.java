@@ -1,5 +1,6 @@
 package goodee.gdj58.online.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +18,77 @@ public class TeacherService {
 	@Autowired
 	private TeacherMapper teacherMapper;
 	
+	
+	
 	// 강사 : 시험 추가
-	public int addTest(int teacherNo, String testTitle, String testDate) {
+	public int addTest(String testTitle, String testDate, int teacherNo
+						, String[] questionTitle, String[] exampleTitle, String[] exampleOx
+						, int[] exampleCnt) {
+		
+		int row = 0;
+		
+		//정보 가공
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("teacherNo", teacherNo);
 		paramMap.put("testTitle", testTitle);
 		paramMap.put("testDate", testDate);
+		paramMap.put("teacherNo", teacherNo);
 		
-		return teacherMapper.insertTest(paramMap);
+		List<Map<String,Object>> questionList = new ArrayList<Map<String,Object>>();
+		
+		int ox = 1; // exampleOx 시작 순서
+		int cnt = 0; // exampleCnt
+		
+		for(int i=0; i<questionTitle.length; i++) {
+			Map<String,Object> question = new HashMap<String,Object>();
+			question.put("questionTitle", questionTitle[i]);
+			question.put("questionIdx", i+1);
+			
+			List<Map<String, Object>> exampleList = new ArrayList<Map<String,Object>>();
+			
+			while(ox < exampleCnt[i]) {
+				Map<String,Object> example = new HashMap<String,Object>();
+				example.put("exampleTitle", exampleTitle[cnt]);
+				example.put("exampleIdx", cnt+1);
+				example.put("exampleOx", exampleOx[cnt]);
+				
+				cnt++;
+				ox++;
+				
+				exampleList.add(example);
+			}
+			question.put("exampleList", exampleList);
+			
+			ox = 1;
+			
+			questionList.add(question);
+		}
+		
+		paramMap.put("questionList", questionList);
+		//정보가공 끝
+		
+		
+		if(teacherMapper.insertTest(paramMap) != 0) {
+			for(Map<String,Object> question : questionList) {
+				// 
+				// question.put("testNo", autoIncrement);
+				if(teacherMapper.insertQuestion(question) != 0) {
+					
+					@SuppressWarnings("unchecked")
+					List<Map<String,Object>> exampleList = (List<Map<String,Object>>) question.get("exampleList");
+					for(Map<String,Object> example : exampleList) {
+						//example.put("questionNo", autoIncrement);
+						if(teacherMapper.insertExample(example) != 0) {
+							row = 1;
+						} else {
+							return row;
+						}
+					}		
+				}
+			}
+		}
+		
+		
+		return row;
 	}
 	
 	// 강사 : 시험리스트 count

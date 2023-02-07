@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
+	
+	<insert id="insertExample"
+			parameterType="java.util.Map">
+			
+			INSERT INTO example (
+				question_no
+				, example_idx
+				, example_title
+				, example_ox
+			) VALUES (
+				#{questionNo}
+				, #{exampleIdx}
+				, #{exampleTitle}
+				, #{exampleOx}
+			)
+	</insert>
+	
+	<insert id="insertQuestion"
+			parameterType="java.util.Map">
+			
+			INSERT INTO question (
+				test_no
+				, question_idx
+				, question_title
+			) VALUES (
+				#{testNo}
+				, #{questionIdx}
+				, #{questionTitle}
+			)
+	</insert>
 
 	<insert id="insertTest"
 			parameterType="java.util.Map">
@@ -8,8 +38,8 @@
 			INSERT INTO test (
 				teacher_no
 				, test_title
-				, test_date)
-			VALUES(
+				, test_date
+			) VALUES (
 				#{teacherNo}
 				, #{testTitle}
 				, #{testDate}
