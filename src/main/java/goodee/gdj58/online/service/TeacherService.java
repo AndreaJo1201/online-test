@@ -22,6 +22,10 @@ public class TeacherService {
 	
 	
 	// 강사 : 시험 삭제하기
+	public int removeTest(int testNo) {
+		
+		return teacherMapper.deleteTest(testNo);
+	}
 	
 	// 강사 : 시험 상세보기
 	public Map<String,Object> getTestOne(int testNo) {

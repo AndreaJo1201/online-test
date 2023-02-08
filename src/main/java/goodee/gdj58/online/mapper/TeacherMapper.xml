@@ -2,7 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
 
-
+	<delete id="deleteTest"
+			parameterType="int">
+				
+			DELETE e
+			FROM
+				example e
+				INNER JOIN question q ON e.question_no = q.question_no
+				INNER JOIN test t ON q.test_no = t.test_no
+			WHERE
+				t.test_no = #{testNo};
+				
+			DELETE
+			FROM
+				question
+			WHERE
+				test_no = #{testNo};
+				
+			DELETE
+			FROM
+				test
+			WHERE
+				test_no = #{testNo};
+	</delete>
 
 	<select id="selectExample"
 			parameterType="int"

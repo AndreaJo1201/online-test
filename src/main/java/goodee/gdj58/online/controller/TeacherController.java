@@ -26,6 +26,14 @@ public class TeacherController {
 	private PageService pageService;
 	
 	
+	// 시험 삭제하기
+	@GetMapping("/teacher/test/removeTest")
+	public String removeTest(@RequestParam(value="testNo", defaultValue="", required=true) int testNo) {
+		teacherService.removeTest(testNo);
+		
+		return "redirect:/teacher/testList";
+	}
+	
 	
 	// 시험 상세보기 페이지
 	@GetMapping("/teacher/test/testOne")
