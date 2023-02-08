@@ -69,7 +69,7 @@
 				
 				let $exampleTitle = $('<input type="text" placeholder="보기 내용" name="exampleTitle">');
 				let $exampleOx1 = $('<input type="checkbox" onchange="checkOx()"><label>정답</label>');
-				let $exampleOx2 = $('<input type="hidden" name="exampleOx()" id="exampleOx" value="오답">');
+				let $exampleOx2 = $('<input type="hidden" name="exampleOx" id="exampleOx" value="오답">');
 				let $removeExam = $('<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>');
 				
 				$example.append($exampleTitle);

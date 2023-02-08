@@ -10,6 +10,12 @@ import goodee.gdj58.online.vo.Teacher;
 @Mapper
 public interface TeacherMapper {
 	
+	List<Map<String,Object>> selectExample(int questionNo);
+	
+	List<Map<String,Object>> selectQuestion(int testNo);
+	
+	Map<String, Object> selectTest(int testNo);
+	
 	int insertExample(Map<String,Object> paramMap);
 	
 	int insertQuestion(Map<String,Object> paramMap);

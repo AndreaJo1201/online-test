@@ -25,6 +25,21 @@ public class TeacherController {
 	@Autowired
 	private PageService pageService;
 	
+	
+	
+	// 시험 상세보기 페이지
+	@GetMapping("/teacher/test/testOne")
+	public String getTestOne(Model model
+							, @RequestParam(value="testNo", defaultValue="", required = true) int testNo) {
+		
+		Map<String,Object> test = teacherService.getTestOne(testNo);
+		
+		model.addAttribute("test", test);
+		
+		return "/teacher/test/testOne";
+	}
+	
+	
 	//시험 등록 post
 	@PostMapping("/teacher/test/addTest")
 	public String getAddTest(@RequestParam(value="testTitle", defaultValue="", required = true) String testTitle
@@ -34,43 +49,7 @@ public class TeacherController {
 							, @RequestParam(value="exampleTitle", defaultValue="", required = true) String[] exampleTitle
 							, @RequestParam(value="exampleOx", defaultValue="", required = true) String[] exampleOx
 							, @RequestParam(value="exampleCnt", defaultValue="", required = true) int[] exampleCnt) {
-		/*
-		Map<String,Object> test = new HashMap<String,Object>();
-		test.put("testTitle", testTitle);
-		test.put("testDate", testDate);
-		test.put("testTeacher", teacherNo);
-		
-		List<Map<String,Object>> questionList = new ArrayList<Map<String,Object>>();
-		
-		int ox = 0; // exampleOx 시작 순서
-		int cnt = 0; // exampleCnt
-		
-		for(int i=0; i<questionTitle.length; i++) {
-			Map<String,Object> question = new HashMap<String,Object>();
-			question.put("questionTitle", questionTitle[i]);
-			question.put("questionIdx", i+1);
-			
-			List<Map<String, Object>> exampleList = new ArrayList<Map<String,Object>>();
-			
-			while(ox < exampleCnt[i]) {
-				Map<String,Object> example = new HashMap<String,Object>();
-				example.put("exampleTitle", exampleTitle[cnt]);
-				example.put("exampleIdx", cnt+1);
-				example.put("exampleOx", exampleOx[cnt]);
-				
-				cnt++;
-				ox++;
-				
-				exampleList.add(example);
-			}
-			
-			ox = 0;
-			
-			questionList.add(question);
-		}
-		
-		test.put("questionList", questionList);
-		*/
+
 		int success = teacherService.addTest(testTitle, testDate, teacherNo, questionTitle, exampleTitle, exampleOx, exampleCnt);
 		
 		if(success == 0) {

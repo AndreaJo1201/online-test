@@ -35,7 +35,7 @@
 			<c:if test="${not empty list}">
 				<c:forEach var="t" items="${list}">
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/teacher/modifyTest?testNo=${t.testNo}">${t.testTitle}</a></td>
+						<td><a href="${pageContext.request.contextPath}/teacher/test/testOne?testNo=${t.testNo}">${t.testTitle}</a></td>
 						<td>${t.testDate}</td>
 						<td><a href="${pageContext.request.contextPath}/teacher/removeTest?testNo=${t.testNo}">삭제</a></td>
 					</tr>
