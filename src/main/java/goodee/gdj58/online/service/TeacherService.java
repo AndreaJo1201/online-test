@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.TeacherMapper;
 import goodee.gdj58.online.vo.Teacher;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
+@Slf4j
 public class TeacherService {
 	@Autowired
 	private TeacherMapper teacherMapper;
@@ -35,7 +37,7 @@ public class TeacherService {
 		
 		List<Map<String,Object>> questionList = new ArrayList<Map<String,Object>>();
 		
-		int ox = 1; // exampleOx 시작 순서
+		int ox = 0; // exampleOx 시작 순서
 		int cnt = 0; // exampleCnt
 		
 		for(int i=0; i<questionTitle.length; i++) {
@@ -58,7 +60,8 @@ public class TeacherService {
 			}
 			question.put("exampleList", exampleList);
 			
-			ox = 1;
+			ox = 0;
+			cnt = 0;
 			
 			questionList.add(question);
 		}
@@ -66,17 +69,19 @@ public class TeacherService {
 		paramMap.put("questionList", questionList);
 		//정보가공 끝
 		
-		
 		if(teacherMapper.insertTest(paramMap) != 0) {
+			log.debug("testNo:" + paramMap.get("testNo"));
 			for(Map<String,Object> question : questionList) {
 				// 
 				// question.put("testNo", autoIncrement);
+				question.put("testNo", paramMap.get("testNo"));
 				if(teacherMapper.insertQuestion(question) != 0) {
-					
 					@SuppressWarnings("unchecked")
 					List<Map<String,Object>> exampleList = (List<Map<String,Object>>) question.get("exampleList");
 					for(Map<String,Object> example : exampleList) {
 						//example.put("questionNo", autoIncrement);
+						log.debug("questionNo: "+question.get("questionNo"));
+						example.put("questionNo", question.get("questionNo"));
 						if(teacherMapper.insertExample(example) != 0) {
 							row = 1;
 						} else {
@@ -86,6 +91,7 @@ public class TeacherService {
 				}
 			}
 		}
+		
 		
 		
 		return row;

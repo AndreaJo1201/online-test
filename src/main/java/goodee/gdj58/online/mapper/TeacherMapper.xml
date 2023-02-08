@@ -19,7 +19,10 @@
 	</insert>
 	
 	<insert id="insertQuestion"
-			parameterType="java.util.Map">
+			parameterType="java.util.Map"
+			useGeneratedKeys="true"
+			keyProperty="questionNo"
+			keyColumn="question_no">
 			
 			INSERT INTO question (
 				test_no
@@ -33,7 +36,10 @@
 	</insert>
 
 	<insert id="insertTest"
-			parameterType="java.util.Map">
+			parameterType="java.util.Map"
+			useGeneratedKeys="true"
+			keyProperty="testNo"
+			keyColumn="test_no">
 	
 			INSERT INTO test (
 				teacher_no
