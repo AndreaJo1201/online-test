@@ -46,7 +46,7 @@
 	
 	<select id="selectEmpListCnt"
 			resultType="int"
-			parameterType="String">
+			parameterType="java.util.Map">
 				
 			SELECT
 				COUNT(*)

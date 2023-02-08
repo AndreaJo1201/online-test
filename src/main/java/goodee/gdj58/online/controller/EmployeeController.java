@@ -107,7 +107,7 @@ public class EmployeeController {
 							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
 		
 		List<Student> list = studentService.getStudentList(currentPage, rowPerPage, searchWord, searchCategory);
-		int listCnt = studentService.getStudentListCnt(searchWord); // list 갯수
+		int listCnt = studentService.getStudentListCnt(searchWord, searchCategory); // list 갯수
 		
 		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
@@ -168,7 +168,7 @@ public class EmployeeController {
 							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
 		
 		List<Teacher> list = teacherService.getTeacherList(currentPage, rowPerPage, searchWord, searchCategory);
-		int listCnt = teacherService.getTeacherListCnt(searchWord); // list 갯수
+		int listCnt = teacherService.getTeacherListCnt(searchWord, searchCategory); // list 갯수
 		
 		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
@@ -268,7 +268,7 @@ public class EmployeeController {
 		
 		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord, searchCategory);
 		
-		int listCnt = employeeService.getEmployeeListCnt(searchWord); // list 갯수
+		int listCnt = employeeService.getEmployeeListCnt(searchWord, searchCategory); // list 갯수
 		
 		Map<String, Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		

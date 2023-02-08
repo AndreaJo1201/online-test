@@ -210,7 +210,7 @@
 	
 	<select id="selectTeacherListCnt"
 			resultType="int"
-			parameterType="String">
+			parameterType="java.util.Map">
 				
 			SELECT
 				COUNT(*)

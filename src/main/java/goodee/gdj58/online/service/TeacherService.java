@@ -166,8 +166,12 @@ public class TeacherService {
 	}
 	
 	// 사원 : 강사리스트 count
-	public int getTeacherListCnt(String searchWord) {
-		return teacherMapper.selectTeacherListCnt(searchWord);
+	public int getTeacherListCnt(String searchWord, String searchCategory) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return teacherMapper.selectTeacherListCnt(paramMap);
 	}
 	
 	// 사원 : 강사리스트 불러오기

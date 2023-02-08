@@ -38,8 +38,12 @@ public class EmployeeService {
 		return employeeMapper.insertEmployee(employee);
 	}
 	
-	public int getEmployeeListCnt(String searchWord) {
-		return employeeMapper.selectEmpListCnt(searchWord);
+	public int getEmployeeListCnt(String searchWord, String searchCategory) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return employeeMapper.selectEmpListCnt(paramMap);
 	}
 	
 	public List<Employee> getEmployeeList(int currentPage, int rowPerPage, String searchWord, String searchCategory) {

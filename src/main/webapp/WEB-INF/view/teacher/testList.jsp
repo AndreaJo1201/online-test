@@ -17,7 +17,7 @@
 		<h1>TEST LIST(시험 목록)</h1>
 		<a href="${pageContext.request.contextPath}/teacher/test/addTest">시험등록</a>
 		<a href="${pageContext.request.contextPath}/teacher/logout">로그아웃</a>
-				<form method="get" action="${pageContext.request.contextPath}/teacher/testList">
+		<form method="get" action="${pageContext.request.contextPath}/teacher/testList">
 			<select name="rowPerPage">
 				<option value=5>5</option>
 				<option value=10 selected="selected">10</option>

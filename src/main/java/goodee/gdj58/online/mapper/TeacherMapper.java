@@ -30,7 +30,7 @@ public interface TeacherMapper {
 	
 	int updateTeacherPw(Map<String, Object> paramMap);
 	
-	int selectTeacherListCnt(String searchWord);
+	int selectTeacherListCnt(Map<String, Object> paramMap);
 	
 	Teacher login(Teacher teacher);
 	

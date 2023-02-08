@@ -17,6 +17,27 @@ public class StudentService {
 	@Autowired
 	private StudentMapper studentMapper;
 	
+	public int getTestListCnt(String searchWord, String searchCategory) {
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return studentMapper.selectTestListCnt(paramMap);
+	}
+	
+	public List<Map<String,Object>> getTestList(int currentPage, int rowPerPage, String searchWord, String searchCategory) {
+		int beginRow = (currentPage-1) * rowPerPage;
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return studentMapper.selectTestList(paramMap);
+	}
+	
 	public int modifyStudentPw(int empNo, String oldPw, String newPw) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("empNo", empNo);
@@ -37,8 +58,12 @@ public class StudentService {
 		return studentMapper.insertStudent(student);
 	}
 	
-	public int getStudentListCnt(String searchWord) {
-		return studentMapper.selectStudentListCnt(searchWord);
+	public int getStudentListCnt(String searchWord, String searchCategory) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return studentMapper.selectStudentListCnt(paramMap);
 	}
 	
 	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord, String searchCategory) {
@@ -48,7 +73,7 @@ public class StudentService {
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
 		paramMap.put("searchWord", searchWord);
-		paramMap.put("serachCategory", searchCategory);
+		paramMap.put("searchCategory", searchCategory);
 		return studentMapper.selectStudentList(paramMap);
 	}
 }
