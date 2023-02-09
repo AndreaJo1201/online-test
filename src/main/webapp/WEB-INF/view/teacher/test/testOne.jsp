@@ -41,5 +41,8 @@
 				</c:forEach>
 			</div>
 		</c:forEach>
+		<div>
+			<a href="${pageContext.request.contextPath}/teacher/test/modifyTest?testNo=${testNo}">시험 수정하기</a>
+		</div>
 	</body>
 </html>

@@ -26,6 +26,36 @@ public class TeacherController {
 	private PageService pageService;
 	
 	
+	// 시험 수정 페이지 post
+	@PostMapping("teacher/test/modifyTest")
+	public String modifyTest(@RequestParam(value="testTitle", defaultValue="", required = true) String testTitle
+							, @RequestParam(value="testNo", defaultValue="", required = true) int testNo
+							, @RequestParam(value="testDate", defaultValue="", required = true) String testDate
+							, @RequestParam(value="teacherNo", defaultValue="", required = true) int teacherNo
+							, @RequestParam(value="questionTitle", defaultValue="", required = true) String[] questionTitle
+							, @RequestParam(value="exampleTitle", defaultValue="", required = true) String[] exampleTitle
+							, @RequestParam(value="exampleIdx", defaultValue="", required = true) int[] exampleIdx
+							, @RequestParam(value="exampleOx", defaultValue="", required = true) String[] exampleOx
+							, @RequestParam(value="exampleCnt", defaultValue="", required = true) int[] exampleCnt) {
+		
+		teacherService.modifyTest(testTitle, testNo, testDate, teacherNo, questionTitle, exampleTitle, exampleOx, exampleCnt);
+		
+		return "";
+	}
+	
+	// 시험 수정 페이지
+	@GetMapping("teacher/test/modifyTest")
+	public String modifyTest(Model model
+			, @RequestParam(value="testNo", defaultValue="", required = true) int testNo) {
+		
+		Map<String,Object> test = teacherService.getTestOne(testNo);
+		
+		model.addAttribute("test", test);
+		model.addAttribute("testNo", testNo);
+		
+		return "/teacher/test/modifyTest";
+	}
+	
 	// 시험 삭제하기
 	@GetMapping("/teacher/test/removeTest")
 	public String removeTest(@RequestParam(value="testNo", defaultValue="", required=true) int testNo) {
@@ -43,6 +73,7 @@ public class TeacherController {
 		Map<String,Object> test = teacherService.getTestOne(testNo);
 		
 		model.addAttribute("test", test);
+		model.addAttribute("testNo", testNo);
 		
 		return "/teacher/test/testOne";
 	}

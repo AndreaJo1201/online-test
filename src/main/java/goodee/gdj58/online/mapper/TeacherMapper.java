@@ -10,6 +10,16 @@ import goodee.gdj58.online.vo.Teacher;
 @Mapper
 public interface TeacherMapper {
 	
+	int deleteExampleByModify(Map<String,Object> paramMap);
+	
+	int updateExample(Map<String,Object> paramMap);
+	
+	int deleteQuestionByModify(Map<String,Object> paramMap);
+	
+	int updateQuestion(Map<String,Object> paramMap);
+	
+	int updateTest(Map<String,Object> paramMap);
+	
 	int deleteTest(int testNo);
 	
 	List<Map<String,Object>> selectExample(int questionNo);

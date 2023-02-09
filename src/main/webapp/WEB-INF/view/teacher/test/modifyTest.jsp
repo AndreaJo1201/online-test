@@ -1,55 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>시험 등록</title>
+		<title>시험 수정</title>
 	</head>
 	
 	<body>
 		<div>
-			<form method="post" action="${pageContext.request.contextPath}/teacher/test/addTest">
+			<form method="post" action="${pageContext.request.contextPath}/teacher/test/modifyTest">
 				<div>
 					<table>
 						<tr>
 							<td>시험 제목</td>
-							<td><input type="text" placeholder="시험 제목" name="testTitle"></td>
+							<td>
+								<input type="text" placeholder="시험 제목" name="testTitle" value="${test['testTitle']}">
+								<input type="hidden" name="testNo" value="${test['testNo']}">
+							</td>
 						</tr>
 						<tr>
 							<td>응시일</td>
-							<td><input type="date" name="testDate"></td>
+							<td><input type="date" name="testDate" value="${test['testDate']}"></td>
 						</tr>
 						<tr>
 							<td>담당 강사</td>
 							<td>
-								<input type="text" readonly="readonly" value="${loginTeacher.teacherName}" name="testTeacher">
-								<input type="hidden" readonly="readonly" value="${loginTeacher.teacherNo}" name="teacherNo">
+								<input type="text" readonly="readonly" name="testTeacher" value="${test['teacherName']}">
+								<input type="hidden" readonly="readonly" value="${test['teacherNo']}" name="teacherNo">
 							</td>
 						</tr>
 					</table>
 				</div>
 				<div class="test">
-					<div class="question" id="question">
-						<span>문제 입력</span>
-						<div>
-							<input type="text" placeholder="문제 내용" name="questionTitle">
+					<c:forEach var="q" items="${test['questionList']}">
+						<div class="question" id="question">
+							<span>문제 입력</span>
+							<div>
+								<input type="text" placeholder="문제 내용" name="questionTitle" value="${q['questionTitle']}">
+							</div>
+							
+							<span>보기 입력</span>
+							<c:forEach var="e" items="${q['example']}">
+								<div class="example" id="example">
+									<input type="text" placeholder="보기 내용" name="exampleTitle" value="${e['exampleTitle']}">
+									<input type="hidden" value="${e['exampleIdx']}">
+									<c:if test="${e['exampleOx'] == '정답'}">
+										<input type="checkbox" onchange="checkOx()" checked="checked"><label>정답</label>
+										<input type="hidden" name="exampleOx" id="exampleOx" value="정답">
+									</c:if>
+									<c:if test="${e['exampleOx'] == '오답'}">
+										<input type="checkbox" onchange="checkOx()"><label>정답</label>
+										<input type="hidden" name="exampleOx" id="exampleOx" value="오답">
+									</c:if>
+									<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>
+								</div>
+							</c:forEach>
+							<input type="hidden" name="exampleCnt" id="exampleCnt" value="${fn:length(q['example'])}">
+							<button type="button" id="addE" onclick="addExam()">보기 추가</button>
 						</div>
-						
-						<span>보기 입력</span>
-						<div class="example" id="example">
-							<input type="text" placeholder="보기 내용" name="exampleTitle">
-							<input type="checkbox" onchange="checkOx()"><label>정답</label>
-							<input type="hidden" name="exampleOx" id="exampleOx" value="오답">
-							<button type="button" id="removeE" onclick="removeExam()">보기 삭제</button>
-						</div>
-						<input type="hidden" name="exampleCnt" id="exampleCnt" value="1">
-						<button type="button" id="addE" onclick="addExam()">보기 추가</button>
-					</div>
+					</c:forEach>
 					<button type="button" id="addQ" onclick="addQuestion()">문제 추가</button>
 				</div>
-				<button type="submit">시험 생성</button>
+				<button type="submit">시험 수정</button>
 			</form>
 		</div>
 		
@@ -146,8 +161,6 @@
 				$examCnt.attr('value',$target.children('#example').length);
 				
 			}
-
-		
-		</script>
+		</script>		
 	</body>
 </html>

@@ -21,6 +21,71 @@ public class TeacherService {
 	private TeacherMapper teacherMapper;
 	
 	
+	// 강사 : 시험 수정하기
+	public int modifyTest(String testTitle, int testNo, String testDate, int teacherNo
+						, String[] questionTitle
+						, String[] exampleTitle, String[] exampleOx, int[] exampleCnt) {
+		
+		Map<String, Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("testTitle", testTitle);
+		paramMap.put("testNo", testNo);
+		paramMap.put("testDate", testDate);
+		paramMap.put("teacherNo", teacherNo);
+		
+		List<Map<String,Object>> questionList = new ArrayList<Map<String,Object>>();
+		
+		int idx = 0; // exampleOx 시작 순서
+		int cnt = 0; // exampleCnt
+		
+		for(int i=0; i<questionTitle.length; i++) {
+			Map<String,Object> question = new HashMap<String,Object>();
+			question.put("questionTitle", questionTitle[i]);
+			question.put("questionIdx", i+1);
+
+			
+			List<Map<String, Object>> exampleList = new ArrayList<Map<String,Object>>();
+			while(idx < exampleCnt[i]) {
+				Map<String,Object> example = new HashMap<String,Object>();
+				example.put("exampleTitle", exampleTitle[cnt]);
+				example.put("exampleIdx", idx+1);
+				example.put("exampleOx", exampleOx[cnt]);
+				
+				cnt += 1;
+				idx += 1;
+				
+				exampleList.add(example);
+			}
+			question.put("exampleList", exampleList);
+			
+			idx = 0;
+			
+			questionList.add(question);
+		}
+		
+		paramMap.put("questionList", questionList);
+		
+		//정보 가공 끝
+		
+		if(teacherMapper.updateTest(paramMap) != 0) {
+			List<Map<String,Object>> beforeQuestion = teacherMapper.selectQuestion(testNo);
+			List<Map<String,Object>> afterQuestion = (List<Map<String,Object>>) paramMap.get("questionList");
+			
+			if(beforeQuestion.size() < afterQuestion.size()) {
+				int qIndex = 0;
+				for(Map<String,Object> question  : afterQuestion) {					
+					if(qIndex < beforeQuestion.size()) {
+						//List<Map<String,Object>> beforeExample = teacherMapper.selectExample(question.get(questionNo));
+						//List<Map<String,Object>> afterExample = (List<Map<String,Object>>) question.get("exampleList");
+						
+						int eIndex = 0;
+					}
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
 	// 강사 : 시험 삭제하기
 	public int removeTest(int testNo) {
 		
