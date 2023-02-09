@@ -6,6 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	</head>
 	
 	<body>
@@ -15,11 +16,15 @@
 		</div>
 		<h1>Add Student</h1>
 		<div>${errorMsg}</div>
+		<div>
+			<input type="text" id="id">
+			<button type="button" id="ckBtn">중복검사</button>
+		</div>
 		<form method="post" action="${pageContext.request.contextPath}/employee/student/addStudent">
 			<table border="1">
 				<tr>
 					<td>ID</td>
-					<td><input type="text" name="studentId" placeholder="ID"></td>
+					<td><input type="text" name="studentId" placeholder="ID" id="studentId"></td>
 				</tr>
 				<tr>
 					<td>Password</td>
@@ -31,6 +36,31 @@
 				</tr>
 			</table>
 			<button type="submit">등록</button>
-		</form>		
+		</form>
+		
+		<script>
+			$('#ckBtn').click(function() {
+				$.ajax({
+					url:'/online-test/idck',
+					type:'get',
+					data:{id:$('#id').val()},
+					success:function(model) { // model : 'YES' or 'NO'
+						if(model=='YES') {
+							// 사용가능한 ID
+							$('#studentId').attr('value',$('#id').val());
+						} else {
+							// 사용 불가능한 ID
+							alert($('#id').val()+'는(은) 사용중인 아이디입니다.');
+						}
+					}
+				})
+			})
+		
+			$('#addBtn').click(function() {
+				// 폼 유효성 검사(전송 전)
+				// 폼 액션 전송
+				console.log('폼 액션 전송');
+			})
+		</script>
 	</body>
 </html>

@@ -7,6 +7,8 @@
 		오늘 날짜의 시험 리스트 응시버튼 -> 시험지(table: question JOIN(*) example) -> 답안지 제출(table : paper) 출력
 	 -->
 	
+	<!-- 응시시험목록(점수확인) -->
+	
 	<a href="${pageContext.request.contextPath}/student/modifyStudentPw">비밀번호변경</a>
 	
 	<a href="${pageContext.request.contextPath}/student/logout">로그아웃</a>

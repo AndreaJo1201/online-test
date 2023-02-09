@@ -16,14 +16,47 @@ import goodee.gdj58.online.service.PageService;
 import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.vo.Student;
 // import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-// @Slf4j
+@Slf4j
 public class StudentController {
 	@Autowired
 	private StudentService studentService;
 	@Autowired
 	private PageService pageService;
+	
+	@GetMapping("/student/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/student/loginStudent";
+	}
+	
+	@PostMapping("/student/modifyStudentPw")
+	public String modifyStudentPw(HttpSession session
+								, @RequestParam(value="oldPw", required = true) String oldPw
+								, @RequestParam(value="newPw", required = true) String newPw) {
+		
+		Student loginStudent = (Student)session.getAttribute("loginStudent");
+		
+		int studentNo = loginStudent.getStudentNo();
+		
+		int row = studentService.modifyStudentPw(studentNo, oldPw, newPw);
+		if(row == 0) {
+			log.debug("UPDATE Password False... :(");
+			
+			return"redirect:/student/modifyStudentPw";
+		}
+		
+		log.debug("UPDATE Password Success..! :D");
+		return "redirect:/student/logout";
+	}
+	
+	@GetMapping("/student/modifyStudentPw")
+	public String modifyStudentPw() {
+		
+		return "student/modifyStudentPw";
+	}
 	
 	@GetMapping("/student/testList")
 	public String getTestList(Model model
