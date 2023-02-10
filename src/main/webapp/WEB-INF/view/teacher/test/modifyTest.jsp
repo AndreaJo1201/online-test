@@ -60,6 +60,7 @@
 							</c:forEach>
 							<input type="hidden" name="exampleCnt" id="exampleCnt" value="${fn:length(q['example'])}">
 							<button type="button" id="addE" onclick="addExam()">보기 추가</button>
+							<button type="button" id="removeQ" onclick="removeQuestion()">문제 삭제</button>
 						</div>
 					</c:forEach>
 					<button type="button" id="addQ" onclick="addQuestion()">문제 추가</button>
@@ -96,6 +97,7 @@
 				let $div = $('<div><input type="text" placeholder="문제 내용" name="questionTitle"></div>');
 				let $span2 = $('<span>보기 입력</span>');
 				let $addE = $('<button type="button" id="addE" onclick="addExam()">보기 추가</button>');
+				let $addQ = $('<button type="button" id="removeQ" onclick="removeQuestion()">문제 삭제</button>')
 				let $exampleCnt = $('<input type="hidden" name="exampleCnt" id="exampleCnt" value="1">');
 				
 				$question.append($span1);
@@ -103,6 +105,7 @@
 				$question.append($span2);
 				$question.append($example);
 				$question.append($addE);
+				$question.append($addQ);
 				$question.append($exampleCnt);
 				
 				$('#addQ').before($question);
@@ -160,6 +163,10 @@
 				let $examCnt = $target.children('#exampleCnt');
 				$examCnt.attr('value',$target.children('#example').length);
 				
+			}
+			
+			function removeQuestion() {
+				event.target.parentNode.remove();
 			}
 		</script>		
 	</body>

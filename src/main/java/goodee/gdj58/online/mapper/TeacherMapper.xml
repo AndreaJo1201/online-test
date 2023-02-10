@@ -20,7 +20,7 @@
 			SET
 				example_title = #{exampleTitle}, example_ox = #{exampleOx}
 			WHERE
-				example_idx = #{example_idx} AND question_no = #{questionNo}
+				example_idx = #{exampleIdx} AND question_no = #{questionNo}
 	</update>
 	
 	<delete id="deleteQuestionByModify"
@@ -41,7 +41,7 @@
 				question
 			SET
 				question_title = #{questionTitle}
-			WEHRE
+			WHERE
 				test_no = #{testNo} AND question_idx = #{questionIdx}
 	</update>
 	

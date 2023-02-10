@@ -22,6 +22,7 @@ public class TeacherService {
 	
 	
 	// 강사 : 시험 수정하기
+	@SuppressWarnings("unchecked")
 	public int modifyTest(String testTitle, int testNo, String testDate, int teacherNo
 						, String[] questionTitle
 						, String[] exampleTitle, String[] exampleOx, int[] exampleCnt) {
@@ -70,15 +71,117 @@ public class TeacherService {
 			List<Map<String,Object>> beforeQuestion = teacherMapper.selectQuestion(testNo);
 			List<Map<String,Object>> afterQuestion = (List<Map<String,Object>>) paramMap.get("questionList");
 			
+			int[] beforeQuestionNo = new int[beforeQuestion.size()];
+			int beforeSize = 0;
+			for(Map<String,Object> beforeQ : beforeQuestion) {
+				beforeQuestionNo[beforeSize] = (int) beforeQ.get("questionNo");
+				beforeSize += 1;
+			}
+			
 			if(beforeQuestion.size() < afterQuestion.size()) {
-				int qIndex = 0;
-				for(Map<String,Object> question  : afterQuestion) {					
-					if(qIndex < beforeQuestion.size()) {
-						//List<Map<String,Object>> beforeExample = teacherMapper.selectExample(question.get(questionNo));
-						//List<Map<String,Object>> afterExample = (List<Map<String,Object>>) question.get("exampleList");
+				int qIndex = 1;
+				for(Map<String,Object> question : afterQuestion) {
+					question.put("testNo", testNo);
+					if(qIndex <= beforeQuestion.size()) {
+						List<Map<String,Object>> beforeExample = teacherMapper.selectExample(beforeQuestionNo[qIndex-1]);
+						List<Map<String,Object>> afterExample = (List<Map<String,Object>>) question.get("exampleList");
 						
-						int eIndex = 0;
+						int eIndex = 1;
+						if(beforeExample.size() <= afterExample.size()) {
+							for(Map<String,Object> example : afterExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								if(eIndex <= beforeExample.size()) {
+									log.debug("보기업데이트");
+									teacherMapper.updateExample(example);
+								} else {
+									log.debug("보기추가");
+									teacherMapper.insertExample(example);
+								}
+								eIndex += 1;
+							}
+						} else {
+							for(Map<String,Object> example : afterExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								log.debug("보기업데이트");
+								teacherMapper.updateExample(example);
+								eIndex += 1;
+							}
+							int forCnt = 1;
+							for(Map<String,Object> example : beforeExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								if(forCnt >= eIndex) {
+									log.debug("보기삭제");
+									teacherMapper.deleteExampleByModify(example);
+								}
+								forCnt += 1;
+							}
+						}
+						log.debug("문제업데이트");
+						teacherMapper.updateQuestion(question);
+						qIndex += 1;
+					} else {
+						teacherMapper.insertQuestion(question);
+						List<Map<String,Object>> insertExample = (List<Map<String,Object>>) question.get("exampleList");
+						for(Map<String,Object> example : insertExample) {
+							example.put("questionNo", question.get("questionNo"));
+							teacherMapper.insertExample(example);
+						}
 					}
+				}
+				
+			} else { // beforeQuestion.size() >= afterQuestion.size()
+				int qIndex = 1;
+
+				for(Map<String,Object> question : afterQuestion) {
+					question.put("testNo", testNo);
+					if(qIndex <= beforeQuestion.size()) {
+						List<Map<String,Object>> beforeExample = teacherMapper.selectExample(beforeQuestionNo[qIndex-1]);
+						List<Map<String,Object>> afterExample = (List<Map<String,Object>>) question.get("exampleList");
+						
+						int eIndex = 1;
+						if(beforeExample.size() <= afterExample.size()) {
+							for(Map<String,Object> example : afterExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								if(eIndex <= beforeExample.size()) {
+									teacherMapper.updateExample(example);
+								} else {
+									teacherMapper.insertExample(example);
+								}
+								eIndex += 1;
+							}
+						} else {
+							for(Map<String,Object> example : afterExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								teacherMapper.updateExample(example);
+								eIndex += 1;
+							}
+							int forCnt = 1;
+							for(Map<String,Object> example : beforeExample) {
+								example.put("questionNo", beforeQuestionNo[qIndex-1]);
+								if(forCnt >= eIndex) {
+									teacherMapper.deleteExampleByModify(example);
+								}
+								forCnt += 1;
+							}
+						}
+						teacherMapper.updateQuestion(question);
+						qIndex += 1;
+					}
+				}
+				
+				//qIndex는 afterSize만큼 돌고 남은 걸 비교 int i = qIndex; i<beforeQuestion.size(); i++
+				int forCnt = 1;
+				for(Map<String,Object> question : beforeQuestion) {
+					question.put("testNo", testNo);
+					if(forCnt >= qIndex) {
+						List<Map<String,Object>> beforeExample = teacherMapper.selectExample((int)question.get("questionNo"));
+						for(Map<String,Object> example : beforeExample) {
+							example.put("questionNo", beforeQuestionNo[qIndex-1]);
+							teacherMapper.deleteExampleByModify(example);
+						}
+						teacherMapper.deleteQuestionByModify(question);
+					}
+					forCnt += 1;
 				}
 			}
 		}

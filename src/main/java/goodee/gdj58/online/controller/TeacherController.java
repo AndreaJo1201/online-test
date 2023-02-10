@@ -40,7 +40,7 @@ public class TeacherController {
 		
 		teacherService.modifyTest(testTitle, testNo, testDate, teacherNo, questionTitle, exampleTitle, exampleOx, exampleCnt);
 		
-		return "";
+		return "redirect:/teacher/testList";
 	}
 	
 	// 시험 수정 페이지
