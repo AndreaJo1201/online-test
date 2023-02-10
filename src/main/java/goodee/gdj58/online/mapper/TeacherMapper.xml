@@ -92,7 +92,6 @@
 				example
 			WHERE
 				question_no = #{questionNo}
-	
 	</select>
 	
 	<select id="selectQuestion"
@@ -127,7 +126,6 @@
 				t.teacher_no = te.teacher_no
 			WHERE
 				t.test_no = #{testNo}
-		
 	</select>
 	
 	<insert id="insertExample"

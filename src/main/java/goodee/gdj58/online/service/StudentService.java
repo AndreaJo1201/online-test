@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.StudentMapper;
+import goodee.gdj58.online.mapper.TeacherMapper;
 import goodee.gdj58.online.vo.Student;
 
 @Service
@@ -16,6 +17,22 @@ import goodee.gdj58.online.vo.Student;
 public class StudentService {
 	@Autowired
 	private StudentMapper studentMapper;
+	@Autowired
+	private TeacherMapper teacherMapper;
+	
+	public Map<String,Object> getTestOne(int testNo) {
+		Map<String,Object> test = teacherMapper.selectTest(testNo);
+		
+		List<Map<String,Object>> questionList = teacherMapper.selectQuestion(testNo);
+		for(Map<String,Object> question : questionList) {
+			List<Map<String,Object>> example = studentMapper.selectExample((int)question.get("questionNo"));
+			question.put("example", example);
+		}
+		
+		test.put("questionList", questionList);
+		
+		return test;
+	}
 	
 	public int getAnswerListCnt(int studentNo, String searchWord, String searchCategory) {
 		

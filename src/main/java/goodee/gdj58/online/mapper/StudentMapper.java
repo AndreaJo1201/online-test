@@ -10,6 +10,8 @@ import goodee.gdj58.online.vo.Student;
 @Mapper
 public interface StudentMapper {
 	
+	List<Map<String,Object>> selectExample(int questionNo);
+	
 	int selectAnswerListCnt(Map<String,Object> paramMap);
 	
 	List<Map<String,Object>> selectAnswerList(Map<String,Object> paramMap);

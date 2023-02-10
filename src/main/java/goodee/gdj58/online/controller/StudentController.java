@@ -26,6 +26,18 @@ public class StudentController {
 	@Autowired
 	private PageService pageService;
 	
+	// 학생 : 시험 응시
+	@GetMapping("/student/test/addPaper")
+	public String getPaper(Model model
+						, @RequestParam(value="testNo", required = true) int testNo) {
+		Map<String,Object> test = studentService.getTestOne(testNo);
+		
+		model.addAttribute("test", test);
+		
+		return "student/paper/addPaper";
+	}
+	
+	//학생 : 응시한 시험 목록 확인
 	@GetMapping("/student/testList/check")
 	public String getAnswerList(Model model
 							, HttpSession session

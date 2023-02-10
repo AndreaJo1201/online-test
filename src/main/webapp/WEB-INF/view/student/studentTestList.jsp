@@ -38,7 +38,7 @@
 			<c:if test="${not empty list}">
 				<c:forEach var="t" items="${list}">
 					<tr>
-						<td>${t.testTitle}</td>
+						<td><a href="${pageContext.request.contextPath}/student/test/addPaper?testNo=${t.testNo}">${t.testTitle}</a></td>
 						<td>${t.teacherName}</td>
 						<td>${t.testDate}</td>
 					</tr>
