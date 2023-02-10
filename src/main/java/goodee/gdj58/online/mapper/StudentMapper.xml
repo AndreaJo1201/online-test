@@ -2,6 +2,94 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 
+	<select id="selectAnswerListCnt"
+			parameterType="java.util.Map"
+			resultType="int">
+			
+			SELECT 
+				COUNT(*)
+			FROM
+				test t
+					INNER JOIN
+				teacher te ON t.teacher_no = te.teacher_no
+					INNER JOIN
+				(SELECT
+					p.question_no questionNo
+					, q.test_no qtestNo
+				FROM
+					paper p
+						INNER JOIN
+					question q
+						ON p.question_no = q.question_no
+				WHERE p.student_no = #{studentNo}) answer ON t.test_no = answer.qtestNo
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord != ''">
+							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'title'">
+						<if test="searchWord != null and searchWord != ''">
+							t.test_title LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord != ''">
+							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%') OR t.test_title LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+	
+	</select>
+
+	<select id="selectAnswerList"
+			parameterType="java.util.Map"
+			resultType="java.util.Map">
+			
+			SELECT 
+				t.test_no testNo
+				, te.teacher_name teacherName
+				, t.test_title testTitle
+				, t.test_date testDate
+			FROM
+				test t
+					INNER JOIN
+				teacher te ON t.teacher_no = te.teacher_no
+					INNER JOIN
+				(SELECT
+					p.question_no questionNo
+					, q.test_no qtestNo
+				FROM
+					paper p
+						INNER JOIN
+					question q
+						ON p.question_no = q.question_no
+				WHERE p.student_no = #{studentNo}) answer ON t.test_no = answer.qtestNo
+			<where>
+				<choose>
+					<when test="searchCategory == 'name'">
+						<if test="searchWord != null and searchWord != ''">
+							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<when test="searchCategory == 'title'">
+						<if test="searchWord != null and searchWord != ''">
+							t.test_title LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchWord != null and searchWord != ''">
+							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%') OR t.test_title LIKE CONCAT('%',#{searchWord},'%')
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+			ORDER BY test_date DESC
+			LIMIT ${beginRow}, ${rowPerPage}
+	</select>
+
 	<select id="selectTestListCnt"
 			resultType="int"
 			parameterType="java.util.Map">
@@ -38,7 +126,12 @@
 				, t.test_title testTitle
 				, t.test_date testDate
 				, teacher.teacher_name teacherName
-			FROM test t INNER JOIN teacher teacher ON t.teacher_no = teacher.teacher_no
+			FROM
+				test t
+			INNER JOIN
+				teacher teacher
+			ON
+				t.teacher_no = teacher.teacher_no
 			<where>
 				<choose>
 					<when test="searchCategory == 'name'">

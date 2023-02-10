@@ -17,6 +17,29 @@ public class StudentService {
 	@Autowired
 	private StudentMapper studentMapper;
 	
+	public int getAnswerListCnt(int studentNo, String searchWord, String searchCategory) {
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("studentNo", studentNo);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return studentMapper.selectAnswerListCnt(paramMap);
+	}
+	
+	public List<Map<String,Object>> getAnswerList(int currentPage, int rowPerPage, int studentNo, String searchWord, String searchCategory) {
+		int beginRow = (currentPage-1) * rowPerPage;
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("studentNo", studentNo);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchCategory", searchCategory);
+		
+		return studentMapper.selectAnswerList(paramMap);
+	}
+	
 	public int getTestListCnt(String searchWord, String searchCategory) {
 		
 		Map<String,Object> paramMap = new HashMap<String,Object>();

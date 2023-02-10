@@ -26,6 +26,29 @@ public class StudentController {
 	@Autowired
 	private PageService pageService;
 	
+	@GetMapping("/student/testList/check")
+	public String getAnswerList(Model model
+							, HttpSession session
+							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
+							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+							, @RequestParam(value="searchWord", defaultValue="") String searchWord
+							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
+		
+		Student loginStudent = (Student) session.getAttribute("loginStudent");
+		
+		List<Map<String,Object>> list = studentService.getAnswerList(currentPage, rowPerPage, loginStudent.getStudentNo(), searchWord, searchCategory);
+		
+		int listCnt = studentService.getAnswerListCnt(loginStudent.getStudentNo(), searchWord, searchCategory);
+		
+		Map<String,Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("paging", paging);
+		
+		return "student/testAnswerList";
+	}
+	
 	@GetMapping("/student/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
