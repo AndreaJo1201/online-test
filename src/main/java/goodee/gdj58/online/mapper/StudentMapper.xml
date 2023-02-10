@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 
+	<insert id="insertPaper"
+			parameterType="java.util.Map">
+			
+			INSERT INTO paper (
+				student_no
+				, question_no
+				, answer
+			) VALUES (
+				#{studentNo}
+				, #{questionNo}
+				, #{answer}
+			)
+	</insert>
+
 	<select id="selectExample"
 			parameterType="int"
 			resultType="java.util.Map">
@@ -54,6 +68,7 @@
 					</otherwise>
 				</choose>
 			</where>
+			GROUP BY test_no
 	
 	</select>
 
@@ -99,6 +114,7 @@
 					</otherwise>
 				</choose>
 			</where>
+			GROUP BY test_no
 			ORDER BY test_date DESC
 			LIMIT ${beginRow}, ${rowPerPage}
 	</select>

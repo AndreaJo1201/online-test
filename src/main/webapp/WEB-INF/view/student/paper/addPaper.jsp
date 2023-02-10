@@ -17,8 +17,8 @@
 			<span>시험일</span> <span>${test['testDate'] }</span>
 		</p>
 		<div>
-			<form method="post" action="${pageContext.request.contextPath}">
-				<input type="hidden" readonly="readonly" name="testNo" value="${test['testNo']}">
+			<form method="post" action="${pageContext.request.contextPath}/student/test/addPaper">
+				<input type="hidden" readonly="readonly" name="studentNo" value="${studentNo}">
 				
 				<c:forEach var="q" items="${test['questionList']}">
 					<div id="question">
@@ -27,7 +27,7 @@
 						<br>
 						<span>${q['questionTitle']}</span>
 						<hr>
-						<c:forEach var="e" items="${q['example']}">
+						<c:forEach var="e" items="${q['example']}" varStatus="example">
 							<div id="example">
 								<input type="radio" name="${q['questionTitle']}" value="${e['exampleIdx']}" onchange="checkOx()">
 								<label>${e['exampleIdx']}. ${e['exampleTitle']}</label>

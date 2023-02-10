@@ -20,6 +20,22 @@ public class StudentService {
 	@Autowired
 	private TeacherMapper teacherMapper;
 	
+	public int insertPaper(int studentNo, int[] questionNo, int[] answer) {
+		
+		for(int i=0; i<questionNo.length; i++) {
+			Map<String,Object> paper = new HashMap<String,Object>();
+			paper.put("studentNo", studentNo);
+			paper.put("questionNo", questionNo[i]);
+			paper.put("answer", answer[i]);
+			
+			if(studentMapper.insertPaper(paper) == 0) {
+				return 1;
+			}
+		}
+		
+		return 0;
+	}
+	
 	public Map<String,Object> getTestOne(int testNo) {
 		Map<String,Object> test = teacherMapper.selectTest(testNo);
 		

@@ -26,13 +26,31 @@ public class StudentController {
 	@Autowired
 	private PageService pageService;
 	
-	// 학생 : 시험 응시
+	// 학생 : 시험 응시 제출
+	@PostMapping("/student/test/addPaper")
+	public String addPaper(@RequestParam(value="studentNo") int studentNo
+						, @RequestParam(value="questionNo") int[] questionNo
+						, @RequestParam(value="answer") int[] answer) {
+		
+		studentService.insertPaper(studentNo, questionNo, answer);
+		
+		return "redirect:/student/testList/check";
+	}
+	
+	// 학생 : 시험 응시 페이지 출력
 	@GetMapping("/student/test/addPaper")
 	public String getPaper(Model model
+						, HttpSession session
 						, @RequestParam(value="testNo", required = true) int testNo) {
 		Map<String,Object> test = studentService.getTestOne(testNo);
 		
+		Student loginStudent = (Student) session.getAttribute("loginStudent");
+		if(loginStudent == null) {
+			return "redirect:/loginStudent";
+		}
+		
 		model.addAttribute("test", test);
+		model.addAttribute("studentNo", loginStudent.getStudentNo());
 		
 		return "student/paper/addPaper";
 	}
