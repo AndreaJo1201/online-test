@@ -91,6 +91,7 @@ public class StudentController {
 		
 		model.addAttribute("list", list);
 		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("searchCategory", searchCategory);
 		model.addAttribute("paging", paging);
 		
 		return "student/testAnswerList";
@@ -130,6 +131,7 @@ public class StudentController {
 	
 	@GetMapping("/student/testList")
 	public String getTestList(Model model
+							, HttpSession session
 							, @RequestParam(value="currentPage", defaultValue = "1") int currentPage
 							, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
 							, @RequestParam(value="searchWord", defaultValue="") String searchWord
@@ -141,8 +143,12 @@ public class StudentController {
 		
 		Map<String,Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
+		Student loginStudent = (Student) session.getAttribute("loginStudent");
+		
+		model.addAttribute("loginStudent",loginStudent);
 		model.addAttribute("list", list);
 		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("searchCategory", searchCategory);
 		model.addAttribute("paging", paging);
 		
 		return "student/studentTestList";
