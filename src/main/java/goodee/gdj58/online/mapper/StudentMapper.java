@@ -10,11 +10,13 @@ import goodee.gdj58.online.vo.Student;
 @Mapper
 public interface StudentMapper {
 	
+	int selectAnswerOne(Map<String,Object> paramMap);
+	
 	int insertPaper(Map<String,Object> paramMap);
 	
 	List<Map<String,Object>> selectExample(int questionNo);
 	
-	int selectAnswerListCnt(Map<String,Object> paramMap);
+	Integer selectAnswerListCnt(Map<String,Object> paramMap);
 	
 	List<Map<String,Object>> selectAnswerList(Map<String,Object> paramMap);
 	

@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 
+	<select id="selectAnswerOne"
+			parameterType="java.util.Map"
+			resultType="int">
+			
+			SELECT
+				answer
+			FROM
+				paper
+			WHERE
+				student_no = #{studentNo} AND question_no = #{questionNo}
+	
+	</select>
+
 	<insert id="insertPaper"
 			parameterType="java.util.Map">
 			
@@ -23,6 +36,7 @@
 			SELECT
 				example_idx exampleIdx
 				, example_title exampleTitle
+				, example_ox exampleOx
 			FROM
 				example
 			WHERE
@@ -31,44 +45,48 @@
 
 	<select id="selectAnswerListCnt"
 			parameterType="java.util.Map"
-			resultType="int">
+			resultType="Integer">
 			
-			SELECT 
+			SELECT
 				COUNT(*)
-			FROM
-				test t
-					INNER JOIN
-				teacher te ON t.teacher_no = te.teacher_no
-					INNER JOIN
-				(SELECT
-					p.question_no questionNo
-					, q.test_no qtestNo
+			FROM (
+				SELECT 
+					COUNT(*)
 				FROM
-					paper p
+					test t
 						INNER JOIN
-					question q
-						ON p.question_no = q.question_no
-				WHERE p.student_no = #{studentNo}) answer ON t.test_no = answer.qtestNo
-			<where>
-				<choose>
-					<when test="searchCategory == 'name'">
-						<if test="searchWord != null and searchWord != ''">
-							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%')
-						</if>
-					</when>
-					<when test="searchCategory == 'title'">
-						<if test="searchWord != null and searchWord != ''">
-							t.test_title LIKE CONCAT('%',#{searchWord},'%')
-						</if>
-					</when>
-					<otherwise>
-						<if test="searchWord != null and searchWord != ''">
-							teacher.teacher_name LIKE CONCAT('%',#{searchWord},'%') OR t.test_title LIKE CONCAT('%',#{searchWord},'%')
-						</if>
-					</otherwise>
-				</choose>
-			</where>
-			GROUP BY test_no
+					teacher te ON t.teacher_no = te.teacher_no
+						INNER JOIN
+					(SELECT
+						p.question_no questionNo
+						, q.test_no qtestNo
+					FROM
+						paper p
+							INNER JOIN
+						question q
+							ON p.question_no = q.question_no
+					WHERE p.student_no = #{studentNo}) answer ON t.test_no = answer.qtestNo
+				<where>
+					<choose>
+						<when test="searchCategory == 'name'">
+							<if test="searchWord != null and searchWord != ''">
+								te.teacher_name LIKE CONCAT('%',#{searchWord},'%')
+							</if>
+						</when>
+						<when test="searchCategory == 'title'">
+							<if test="searchWord != null and searchWord != ''">
+								t.test_title LIKE CONCAT('%',#{searchWord},'%')
+							</if>
+						</when>
+						<otherwise>
+							<if test="searchWord != null and searchWord != ''">
+								te.teacher_name LIKE CONCAT('%',#{searchWord},'%') OR t.test_title LIKE CONCAT('%',#{searchWord},'%')
+							</if>
+						</otherwise>
+					</choose>
+				</where>
+				GROUP BY test_no
+			) t
 	
 	</select>
 

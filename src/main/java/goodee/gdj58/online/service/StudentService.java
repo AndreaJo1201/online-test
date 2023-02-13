@@ -19,6 +19,26 @@ public class StudentService {
 	private StudentMapper studentMapper;
 	@Autowired
 	private TeacherMapper teacherMapper;
+
+	public Map<String,Object> selectAnswerOne(int testNo, int studentNo) {
+		
+		Map<String,Object> test = teacherMapper.selectTest(testNo);
+		
+		List<Map<String,Object>> questionList = teacherMapper.selectQuestion(testNo);
+		for(Map<String,Object> question : questionList) {
+			List<Map<String,Object>> example = studentMapper.selectExample((int)question.get("questionNo"));
+			Map<String,Object> parameter = new HashMap<String,Object>();
+			parameter.put("studentNo", studentNo);
+			parameter.put("questionNo", (int)question.get("questionNo"));
+			int paper = studentMapper.selectAnswerOne(parameter);
+			question.put("example", example);
+			question.put("answer", paper);
+		}
+		
+		test.put("questionList", questionList);
+		
+		return test;
+	}
 	
 	public int insertPaper(int studentNo, int[] questionNo, int[] answer) {
 		
@@ -50,7 +70,7 @@ public class StudentService {
 		return test;
 	}
 	
-	public int getAnswerListCnt(int studentNo, String searchWord, String searchCategory) {
+	public Integer getAnswerListCnt(int studentNo, String searchWord, String searchCategory) {
 		
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("studentNo", studentNo);

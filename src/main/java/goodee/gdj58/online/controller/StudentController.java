@@ -26,6 +26,21 @@ public class StudentController {
 	@Autowired
 	private PageService pageService;
 	
+	// 학생 : 답안지 확인
+	@GetMapping("/student/answerOne")
+	public String answerOne(HttpSession session
+						, Model model
+						, @RequestParam(value="testNo") int testNo) {
+		Student student = (Student) session.getAttribute("loginStudent");
+		int studentNo = student.getStudentNo();
+		
+		Map<String,Object> answer = studentService.selectAnswerOne(testNo, studentNo);
+		
+		model.addAttribute("answer", answer);
+		
+		return "student/testOne";
+	}
+	
 	// 학생 : 시험 응시 제출
 	@PostMapping("/student/test/addPaper")
 	public String addPaper(@RequestParam(value="studentNo") int studentNo
@@ -68,8 +83,10 @@ public class StudentController {
 		
 		List<Map<String,Object>> list = studentService.getAnswerList(currentPage, rowPerPage, loginStudent.getStudentNo(), searchWord, searchCategory);
 		
-		int listCnt = studentService.getAnswerListCnt(loginStudent.getStudentNo(), searchWord, searchCategory);
-		
+		Integer listCnt = studentService.getAnswerListCnt(loginStudent.getStudentNo(), searchWord, searchCategory);
+		if(listCnt == null) {
+			listCnt = 0;
+		}
 		Map<String,Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
 		model.addAttribute("list", list);
