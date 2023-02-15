@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
 	
+	<select id="selectTestByAnswer"
+			resultType="Integer"
+			parameterType="int">
+	
+			SELECT IFNULL(t.test_no,'0')
+			FROM test t INNER JOIN question q ON t.test_no = q.test_no
+						INNER JOIN paper p ON p.question_no = q.question_no
+			WHERE t.test_no = #{testNo}
+			GROUP BY t.test_no
+	</select>
+	
 	<delete id="deleteExampleByModify"
 			parameterType="java.util.Map">
 			

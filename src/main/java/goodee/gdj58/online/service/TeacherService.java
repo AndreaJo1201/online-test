@@ -21,6 +21,11 @@ public class TeacherService {
 	private TeacherMapper teacherMapper;
 	
 	
+	// 강사 : 시험 응시한 사람 확인
+	public Integer selectTestByAnswer(int testNo) {
+		return teacherMapper.selectTestByAnswer(testNo);
+	}
+	
 	// 강사 : 시험 수정하기
 	@SuppressWarnings("unchecked")
 	public int modifyTest(String testTitle, int testNo, String testDate, int teacherNo

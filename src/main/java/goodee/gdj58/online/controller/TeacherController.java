@@ -48,6 +48,13 @@ public class TeacherController {
 	public String modifyTest(Model model
 			, @RequestParam(value="testNo", defaultValue="", required = true) int testNo) {
 		
+		if(teacherService.selectTestByAnswer(testNo) != null) {	
+			model.addAttribute("message", "이미 응시한 학생이 있어 수정이 불가능합니다.");
+			model.addAttribute("url", "/online-test/teacher/testList");
+			
+			return "alert";
+		}
+		
 		Map<String,Object> test = teacherService.getTestOne(testNo);
 		
 		model.addAttribute("test", test);
@@ -58,7 +65,16 @@ public class TeacherController {
 	
 	// 시험 삭제하기
 	@GetMapping("/teacher/test/removeTest")
-	public String removeTest(@RequestParam(value="testNo", defaultValue="", required=true) int testNo) {
+	public String removeTest(@RequestParam(value="testNo", defaultValue="", required=true) int testNo
+							, Model model) {
+		
+		if(teacherService.selectTestByAnswer(testNo) != null) {	
+			model.addAttribute("message", "이미 응시한 학생이 있어 삭제가 불가능합니다.");
+			model.addAttribute("url", "/online-test/teacher/testList");
+			
+			return "alert";
+		}
+		
 		teacherService.removeTest(testNo);
 		
 		return "redirect:/teacher/testList";
