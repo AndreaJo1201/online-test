@@ -10,6 +10,8 @@ import goodee.gdj58.online.vo.Student;
 @Mapper
 public interface StudentMapper {
 	
+	int[] selectTestByAnswer(int studentNo);
+	
 	int selectAnswerOne(Map<String,Object> paramMap);
 	
 	int insertPaper(Map<String,Object> paramMap);

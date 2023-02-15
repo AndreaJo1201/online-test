@@ -137,13 +137,14 @@ public class StudentController {
 							, @RequestParam(value="searchWord", defaultValue="") String searchWord
 							, @RequestParam(value="searchCategory", defaultValue="ID") String searchCategory) {
 		
-		List<Map<String,Object>> list = studentService.getTestList(currentPage, rowPerPage, searchWord, searchCategory);
+		Student loginStudent = (Student) session.getAttribute("loginStudent");
+		
+		List<Map<String,Object>> list = studentService.getTestList(currentPage, rowPerPage, searchWord, searchCategory, loginStudent.getStudentNo());
 		
 		int listCnt = studentService.getTestListCnt(searchWord, searchCategory);
 		
 		Map<String,Integer> paging = pageService.paging(listCnt, currentPage, rowPerPage);
 		
-		Student loginStudent = (Student) session.getAttribute("loginStudent");
 		
 		model.addAttribute("loginStudent",loginStudent);
 		model.addAttribute("list", list);

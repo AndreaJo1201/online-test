@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 
+	<select id="selectTestByAnswer"
+			parameterType="int"
+			resultType="Integer">
+			
+			SELECT t.test_no testNo
+			FROM test t INNER JOIN question q ON t.test_no = q.test_no
+						INNER JOIN paper p ON p.question_no = q.question_no
+			WHERE p.student_no = #{studentNo}
+			GROUP BY t.test_no
+	
+	</select>
+
 	<select id="selectAnswerOne"
 			parameterType="java.util.Map"
 			resultType="int">

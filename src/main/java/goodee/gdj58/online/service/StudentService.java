@@ -102,7 +102,7 @@ public class StudentService {
 		return studentMapper.selectTestListCnt(paramMap);
 	}
 	
-	public List<Map<String,Object>> getTestList(int currentPage, int rowPerPage, String searchWord, String searchCategory) {
+	public List<Map<String,Object>> getTestList(int currentPage, int rowPerPage, String searchWord, String searchCategory, int studentNo) {
 		int beginRow = (currentPage-1) * rowPerPage;
 		
 		Map<String,Object> paramMap = new HashMap<String,Object>();
@@ -111,7 +111,19 @@ public class StudentService {
 		paramMap.put("searchWord", searchWord);
 		paramMap.put("searchCategory", searchCategory);
 		
-		return studentMapper.selectTestList(paramMap);
+		List<Map<String,Object>> list = studentMapper.selectTestList(paramMap);
+		
+		int[] answerTestNo = studentMapper.selectTestByAnswer(studentNo);
+		
+		if(answerTestNo != null) {
+			for(int i=0; i<answerTestNo.length; i++) {
+				int size = i;
+				list.removeIf(item -> ((int)item.get("testNo") == answerTestNo[size]) );
+			}
+		}
+
+		
+		return list;
 	}
 	
 	public int modifyStudentPw(int empNo, String oldPw, String newPw) {
